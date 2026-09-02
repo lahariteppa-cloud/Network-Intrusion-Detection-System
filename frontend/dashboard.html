@@ -8,47 +8,84 @@
     <link rel="stylesheet" href="style..css">
 </head>
 <body>
+    <div class="dashboard">
 
-<header>
+    <h1>Network Intrusion Detection Dashboard</h1>
 
-    <div class="logo">🛡 NIDS</div>
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="alerts.html">Alerts</a>
-        <a href="reports.html">Reports</a>
-        <a href="about.html">About</a>
-        <a href="login.html">Logout</a>
-    </nav>
-
-</header>
-
-<section class="dashboard">
-
-    <h1>Dashboard</h1>
-
-    <div class="grid">
+    <div class="stats">
 
         <div class="card">
-            <h2>Card 1</h2>
+            <h2>12,845</h2>
+            <p>Total Network Traffic</p>
         </div>
 
         <div class="card">
-            <h2>Card 2</h2>
+            <h2>27</h2>
+            <p>Threats Detected</p>
         </div>
 
         <div class="card">
-            <h2>Card 3</h2>
+            <h2>99.2%</h2>
+            <p>Detection Accuracy</p>
         </div>
 
         <div class="card">
-            <h2>Card 4</h2>
+            <h2>15</h2>
+            <p>Blocked IPs</p>
         </div>
 
     </div>
 
-</section>
+    <div class="charts">
+
+        <div class="chart-box">
+            <h3>📈 Network Traffic</h3>
+            <p>Chart will appear here</p>
+        </div>
+
+        <div class="chart-box">
+            <h3>🥧 Attack Distribution</h3>
+            <p>Chart will appear here</p>
+        </div>
+
+    </div>
+
+    <div class="alerts-section">
+
+        <h2>Recent Alerts</h2>
+
+        <table>
+
+            <tr>
+                <th>Time</th>
+                <th>Attack Type</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>10:20 AM</td>
+                <td>DDoS Attack</td>
+                <td>Blocked</td>
+            </tr>
+
+            <tr>
+                <td>10:45 AM</td>
+                <td>SQL Injection</td>
+                <td>Detected</td>
+            </tr>
+
+            <tr>
+                <td>11:10 AM</td>
+                <td>Brute Force</td>
+                <td>Blocked</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
 
 </body>
 </html>

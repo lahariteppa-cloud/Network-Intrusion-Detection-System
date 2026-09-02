@@ -9,47 +9,64 @@
 </head>
 
 <body>
+    <div class="alerts-page">
 
-<header>
+    <h1>🚨 Security Alerts</h1>
 
-    <div class="logo">🛡 NIDS</div>
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="alerts.html">Alerts</a>
-        <a href="reports.html">Reports</a>
-        <a href="about.html">About</a>
-        <a href="login.html">Logout</a>
-    </nav>
-
-</header>
-
-<section class="dashboard">
-
-    <h1>Security Alerts</h1>
-
-    <div class="grid">
+    <div class="stats">
 
         <div class="card">
-            <h2>Alert Card 1</h2>
+            <h2>27</h2>
+            <p>Total Alerts</p>
         </div>
 
         <div class="card">
-            <h2>Alert Card 2</h2>
+            <h2>12</h2>
+            <p>High Risk</p>
         </div>
 
         <div class="card">
-            <h2>Alert Card 3</h2>
+            <h2>8</h2>
+            <p>Medium Risk</p>
         </div>
 
         <div class="card">
-            <h2>Alert Card 4</h2>
+            <h2>7</h2>
+            <p>Low Risk</p>
         </div>
 
     </div>
 
-</section>
+    <div class="alert-card high">
+        <h3>🔴 DDoS Attack</h3>
+        <p><strong>IP Address:</strong> 192.168.1.10</p>
+        <p><strong>Time:</strong> 10:20 AM</p>
+        <span>Blocked</span>
+    </div>
+
+    <div class="alert-card medium">
+        <h3>🟠 SQL Injection</h3>
+        <p><strong>IP Address:</strong> 172.16.0.25</p>
+        <p><strong>Time:</strong> 10:45 AM</p>
+        <span>Detected</span>
+    </div>
+
+    <div class="alert-card low">
+        <h3>🟢 Brute Force Attack</h3>
+        <p><strong>IP Address:</strong> 10.0.0.15</p>
+        <p><strong>Time:</strong> 11:10 AM</p>
+        <span>Blocked</span>
+    </div>
+
+    <div class="alert-card info">
+        <h3>🔵 Port Scan</h3>
+        <p><strong>IP Address:</strong> 192.168.0.55</p>
+        <p><strong>Time:</strong> 11:35 AM</p>
+        <span>Monitoring</span>
+    </div>
+
+</div>
+    
 
 </body>
 </html>
