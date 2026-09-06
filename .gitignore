@@ -219,3 +219,10 @@ __marimo__/
 
 # SQLite database files
 *.db
+venv/
+.env
+__pycache__/
+*.pyc
+reports/
+nids.db
+.vscode/
