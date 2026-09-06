@@ -26,35 +26,34 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 
 <h2>Create Account</h2>
 
-<form>
+<form id="signupForm">
 
 <div class="input-box">
 <i class="fa-solid fa-user"></i>
-<input type="text" placeholder="Full Name" required>
+<input type="text" id="full_name" placeholder="Full Name" required>
 </div>
 
 <div class="input-box">
 <i class="fa-solid fa-envelope"></i>
-<input type="email" placeholder="Email Address" required>
+<input type="email" id="email" placeholder="Email Address" required>
 </div>
 
 <div class="input-box">
 <i class="fa-solid fa-user-tag"></i>
-<input type="text" placeholder="Username" required>
+<input type="text" id="username" placeholder="Username" required>
 </div>
 
 <div class="input-box">
 <i class="fa-solid fa-lock"></i>
-<input type="password" placeholder="Password" required>
+<input type="password" id="password" placeholder="Password" required>
 </div>
 
 <div class="input-box">
 <i class="fa-solid fa-lock"></i>
-<input type="password" placeholder="Confirm Password" required>
+<input type="password" id="confirm_password" placeholder="Confirm Password" required>
 </div>
 
-<button type="button" class="signup-btn"
-onclick="window.location.href='login.html'">
+<button type="submit" class="signup-btn">
 Create Account
 </button>
 
@@ -67,6 +66,6 @@ Create Account
 </div>
 
 </div>
-
+<script src="script.js"></script>
 </body>
 </html>

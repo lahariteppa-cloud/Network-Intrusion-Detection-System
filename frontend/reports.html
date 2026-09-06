@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="style..css">
 
 </head>
+
 <body>
 
 <header>
@@ -25,12 +26,14 @@
 
 </header>
 
+
 <section class="reports">
 
 <h1>Security Reports</h1>
 
 <table>
 
+<thead>
 <tr>
 <th>Report ID</th>
 <th>Report Name</th>
@@ -38,42 +41,22 @@
 <th>Status</th>
 <th>Action</th>
 </tr>
+</thead>
+
+<tbody id="reportsContainer">
 
 <tr>
-<td>R001</td>
-<td>Daily Report</td>
-<td>04-08-2026</td>
-<td>Completed</td>
-<td><button>View</button></td>
+<td colspan="5">Loading reports...</td>
 </tr>
 
-<tr>
-<td>R002</td>
-<td>Weekly Report</td>
-<td>04-08-2026</td>
-<td>Completed</td>
-<td><button>View</button></td>
-</tr>
-
-<tr>
-<td>R003</td>
-<td>Monthly Report</td>
-<td>04-08-2026</td>
-<td>Pending</td>
-<td><button>View</button></td>
-</tr>
-
-<tr>
-<td>R004</td>
-<td>Attack Summary</td>
-<td>04-08-2026</td>
-<td>Completed</td>
-<td><button>View</button></td>
-</tr>
+</tbody>
 
 </table>
 
 </section>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>

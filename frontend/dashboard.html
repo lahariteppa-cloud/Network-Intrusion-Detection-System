@@ -15,22 +15,22 @@
     <div class="stats">
 
         <div class="card">
-            <h2>12,845</h2>
+            <h2 id="totalTraffic">0</h2>
             <p>Total Network Traffic</p>
         </div>
 
         <div class="card">
-            <h2>27</h2>
+            <h2 id="threatsDetected">0</h2>
             <p>Threats Detected</p>
         </div>
 
         <div class="card">
-            <h2>99.2%</h2>
+            <h2 id="detectionAccuracy">0%</h2>
             <p>Detection Accuracy</p>
         </div>
 
         <div class="card">
-            <h2>15</h2>
+            <h2 id="blockedIPs">0</h2>
             <p>Blocked IPs</p>
         </div>
 
@@ -52,40 +52,28 @@
 
     <div class="alerts-section">
 
-        <h2>Recent Alerts</h2>
+    <h2>Recent Alerts</h2>
 
-        <table>
-
+    <table>
+        <thead>
             <tr>
                 <th>Time</th>
                 <th>Attack Type</th>
                 <th>Status</th>
             </tr>
+        </thead>
 
+        <tbody id="recentAlerts">
             <tr>
-                <td>10:20 AM</td>
-                <td>DDoS Attack</td>
-                <td>Blocked</td>
+                <td colspan="3">Loading alerts...</td>
             </tr>
-
-            <tr>
-                <td>10:45 AM</td>
-                <td>SQL Injection</td>
-                <td>Detected</td>
-            </tr>
-
-            <tr>
-                <td>11:10 AM</td>
-                <td>Brute Force</td>
-                <td>Blocked</td>
-            </tr>
-
-        </table>
-
-    </div>
+        </tbody>
+    </table>
 
 </div>
 
+</div>
 
+<script src="script.js"></script>
 </body>
 </html>
