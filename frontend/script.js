@@ -1,4 +1,34 @@
 // ===============================
+// CONFIGURATION
+// ===============================
+const API_BASE = (() => {
+    // Check for meta tag first (for production)
+    const metaTag = document.querySelector('meta[name="api-base-url"]');
+    if (metaTag && metaTag.content) {
+        return metaTag.content;
+    }
+    // Check for environment variable (set at build time)
+    if (typeof window !== 'undefined' && window.__API_BASE__) {
+        return window.__API_BASE__;
+    }
+    // Default to local development
+    return "http://127.0.0.1:5000";
+})();
+
+// Helper function for API calls
+async function apiCall(endpoint, options = {}) {
+    const url = `${API_BASE}${endpoint}`;
+    const defaultOptions = {
+        headers: {
+            "Content-Type": "application/json",
+            ...options.headers
+        }
+    };
+    const response = await fetch(url, { ...defaultOptions, ...options });
+    return response.json();
+}
+
+// ===============================
 // SIGNUP
 // ===============================
 
@@ -14,11 +44,8 @@ document.getElementById("signupForm")?.addEventListener("submit", async function
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/api/signup", {
+        const result = await apiCall("/api/signup", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: JSON.stringify({
                 full_name: full_name,
                 email: email,
@@ -27,8 +54,6 @@ document.getElementById("signupForm")?.addEventListener("submit", async function
                 confirm_password: confirm_password
             })
         });
-
-        const result = await response.json();
 
         alert(result.message);
 
@@ -60,18 +85,13 @@ document.getElementById("loginForm")?.addEventListener("submit", async function 
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/api/login", {
+        const result = await apiCall("/api/login", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: JSON.stringify({
                 username: username,
                 password: password
             })
         });
-
-        const result = await response.json();
 
         alert(result.message);
 
@@ -108,9 +128,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/api/dashboard");
-
-        const result = await response.json();
+        const result = await apiCall("/api/dashboard");
 
         if (result.success) {
 
@@ -149,9 +167,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/api/alerts");
-
-        const result = await response.json();
+        const result = await apiCall("/api/alerts");
 
         if (result.success) {
 
@@ -202,9 +218,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/api/alerts");
-
-        const result = await response.json();
+        const result = await apiCall("/api/alerts");
 
         if (result.success) {
 
