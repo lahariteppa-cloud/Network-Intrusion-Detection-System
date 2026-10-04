@@ -1,72 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIDS - Register Security Account</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="api-base-url" content="https://nids-backend.onrender.com">
-
-<title>Create Account</title>
-
-<link rel="stylesheet" href="style..css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
+<body class="auth-page">
 
-<body>
+    <div class="auth-card-frame" style="max-width: 480px;">
+        <div class="auth-icon-badge">
+            <i class="fa-solid fa-user-plus"></i>
+        </div>
 
-<div class="signup-page">
+        <h2>Create Account</h2>
+        <p class="auth-sub">Register new security analyst access for NIDS</p>
 
-<div class="signup-box">
+        <form class="auth-form" id="signupForm">
+            <div class="input-field-group">
+                <label for="fullName">Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input type="text" id="fullName" placeholder="Sarah Connor" required>
+                </div>
+            </div>
 
-<div class="login-icon">
-<i class="fa-solid fa-user-plus"></i>
-</div>
+            <div class="input-field-group">
+                <label for="email">Work Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" placeholder="sarah@enterprise.com" required>
+                </div>
+            </div>
 
-<h2>Create Account</h2>
+            <div class="input-field-group">
+                <label for="regUsername">Username</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user-tag"></i>
+                    <input type="text" id="regUsername" placeholder="analyst_sarah" required>
+                </div>
+            </div>
 
-<form id="signupForm">
+            <div class="input-field-group">
+                <label for="regPassword">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="regPassword" placeholder="Create strong password" required minlength="6">
+                </div>
+            </div>
 
-<div class="input-box">
-<i class="fa-solid fa-user"></i>
-<input type="text" id="full_name" placeholder="Full Name" required>
-</div>
+            <button type="submit" class="auth-action-btn" id="signupSubmitBtn">
+                <i class="fa-solid fa-check"></i> Register Account
+            </button>
 
-<div class="input-box">
-<i class="fa-solid fa-envelope"></i>
-<input type="email" id="email" placeholder="Email Address" required>
-</div>
+            <div class="auth-footer-links" style="justify-content: center;">
+                <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </form>
 
-<div class="input-box">
-<i class="fa-solid fa-user-tag"></i>
-<input type="text" id="username" placeholder="Username" required>
-</div>
+        <p class="auth-bottom-text">
+            Already have an account? <a href="login.html">Log In</a>
+        </p>
+    </div>
 
-<div class="input-box">
-<i class="fa-solid fa-lock"></i>
-<input type="password" id="password" placeholder="Password" required>
-</div>
-
-<div class="input-box">
-<i class="fa-solid fa-lock"></i>
-<input type="password" id="confirm_password" placeholder="Confirm Password" required>
-</div>
-
-<button type="submit" class="signup-btn">
-Create Account
-</button>
-
-<div class="login-links">
-<a href="login.html">Already have an account? Login</a>
-</div>
-
-</form>
-
-</div>
-
-</div>
-<script src="script.js"></script>
+    <!-- Logic Script -->
+    <script src="app.js"></script>
 </body>
 </html>

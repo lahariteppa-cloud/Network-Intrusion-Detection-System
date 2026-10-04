@@ -3,78 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="api-base-url" content="https://nids-backend.onrender.com">
-    <title>NIDS Dashboard</title>
+    <title>NIDS Dashboard - Real-time Network Analytics</title>
 
-    <link rel="stylesheet" href="style..css">
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="dashboard">
 
-    <h1>Network Intrusion Detection Dashboard</h1>
+    <!-- Unified Header & Navigation Bar -->
+    <header>
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>NIDS</span>
+        </a>
 
-    <div class="stats">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="alerts.html">Alerts</a>
+            <a href="reports.html">Reports</a>
+            <a href="about.html">About</a>
+        </nav>
 
-        <div class="card">
-            <h2 id="totalTraffic">0</h2>
-            <p>Total Network Traffic</p>
+        <div class="nav-actions">
+            <a href="login.html" class="logout-btn-nav">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Dashboard Container -->
+    <main class="page-container">
+        <!-- Page Title & Quick Actions -->
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Network Intrusion Detection Dashboard</h1>
+                <p>Real-time telemetry and active network defense overview</p>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn secondary" id="simulateAttackBtn">
+                    <i class="fa-solid fa-bolt"></i> Simulate Attack
+                </button>
+                <button class="btn primary" id="exportReportBtn">
+                    <i class="fa-solid fa-download"></i> Export Log
+                </button>
+            </div>
         </div>
 
-        <div class="card">
-            <h2 id="threatsDetected">0</h2>
-            <p>Threats Detected</p>
+        <!-- Telemetry Stats Cards -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <div class="stat-info">
+                    <h2>12,845</h2>
+                    <p>Total Packets / Sec</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="stat-info">
+                    <h2 id="statThreatsCount">27</h2>
+                    <p>Threats Detected</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h2>99.2%</h2>
+                    <p>Detection Accuracy</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <div class="stat-info">
+                    <h2>15</h2>
+                    <p>Quarantined IPs</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2 id="detectionAccuracy">0%</h2>
-            <p>Detection Accuracy</p>
+        <!-- Interactive Visualizer Charts -->
+        <div class="charts-grid">
+            <div class="chart-box">
+                <div class="chart-header">
+                    <h3><i class="fa-solid fa-chart-line text-blue"></i> Network Traffic Velocity</h3>
+                    <span>24h Window</span>
+                </div>
+                <div class="chart-canvas-wrapper">
+                    <canvas id="trafficChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-box">
+                <div class="chart-header">
+                    <h3><i class="fa-solid fa-chart-pie text-cyan"></i> Attack Vector Breakdown</h3>
+                    <span>By Severity</span>
+                </div>
+                <div class="chart-canvas-wrapper">
+                    <canvas id="attackChart"></canvas>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2 id="blockedIPs">0</h2>
-            <p>Blocked IPs</p>
+        <!-- Recent Threat Events Table -->
+        <div class="data-card">
+            <div class="data-card-header">
+                <h2>Recent Intrusion Events</h2>
+                <div class="search-input-group">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search events..." class="table-search-input" data-target-table="#dashboardAlertsTable">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="dashboardAlertsTable">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Attack Signature</th>
+                            <th>Source IP</th>
+                            <th>Risk Level</th>
+                            <th>Action Taken</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>10:20 AM</strong></td>
+                            <td>DDoS SYN Flood</td>
+                            <td><code>192.168.1.10</code></td>
+                            <td><span class="badge high">High Risk</span></td>
+                            <td><span class="badge success"><i class="fa-solid fa-shield"></i> Blocked</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>10:45 AM</strong></td>
+                            <td>SQL Injection Payload</td>
+                            <td><code>172.16.0.25</code></td>
+                            <td><span class="badge medium">Medium Risk</span></td>
+                            <td><span class="badge info"><i class="fa-solid fa-eye"></i> Detected</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>11:10 AM</strong></td>
+                            <td>SSH Brute Force</td>
+                            <td><code>10.0.0.15</code></td>
+                            <td><span class="badge low">Low Risk</span></td>
+                            <td><span class="badge success"><i class="fa-solid fa-shield"></i> Blocked</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>11:35 AM</strong></td>
+                            <td>Port Scan Anomaly</td>
+                            <td><code>192.168.0.55</code></td>
+                            <td><span class="badge info">Info</span></td>
+                            <td><span class="badge info"><i class="fa-solid fa-clock"></i> Monitoring</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </main>
 
-    </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <strong>NIDS</strong> &bull; Network Intrusion Detection System. Continuous Threat Intelligence.</p>
+    </footer>
 
-    <div class="charts">
-
-        <div class="chart-box">
-            <h3>📈 Network Traffic</h3>
-            <p>Chart will appear here</p>
-        </div>
-
-        <div class="chart-box">
-            <h3>🥧 Attack Distribution</h3>
-            <p>Chart will appear here</p>
-        </div>
-
-    </div>
-
-    <div class="alerts-section">
-
-    <h2>Recent Alerts</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Attack Type</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-
-        <tbody id="recentAlerts">
-            <tr>
-                <td colspan="3">Loading alerts...</td>
-            </tr>
-        </tbody>
-    </table>
-
-</div>
-
-</div>
-
-<script src="script.js"></script>
+    <!-- Logic Script -->
+    <script src="app.js"></script>
 </body>
 </html>

@@ -3,42 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="api-base-url" content="https://nids-backend.onrender.com">
-    
+    <meta name="description" content="NIDS - AI Powered Network Intrusion Detection System providing real-time security monitoring and anomaly threat mitigation.">
     <title>NIDS - Network Intrusion Detection System</title>
 
-    <link rel="stylesheet" href="style..css">
-
+    <!-- Google Fonts & Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Navigation Bar -->
+    <!-- Unified Header & Navigation Bar -->
     <header>
-
-        <div class="logo">
-            <i class="fa-solid fa-shield-halved"></i> NIDS
-        </div>
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>NIDS</span>
+        </a>
 
         <nav>
-            <a href="index.html"></html></a>
-            <a href="dashboard.html">dashboard</a>
+            <a href="index.html" class="active">Home</a>
+            <a href="dashboard.html">Dashboard</a>
             <a href="alerts.html">Alerts</a>
             <a href="reports.html">Reports</a>
             <a href="about.html">About</a>
-
-            <a href="login.html" class="login">
-                <i class="fa-solid fa-user"></i> Login
-            </a>
         </nav>
 
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn-nav">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+            </a>
+        </div>
     </header>
 
     <!-- Hero Section -->
-
     <section class="hero">
-
         <div class="left">
+            <div class="badge-tag">
+                <span class="pulse-dot"></span> Next-Gen AI Security Engine
+            </div>
 
             <h1>
                 NETWORK <br>
@@ -47,88 +48,96 @@
             </h1>
 
             <p>
-                Real-time monitoring and AI-powered detection of network threats
-                to keep your systems secure.
+                Continuous real-time traffic monitoring and state-of-the-art machine learning algorithms designed to detect, classify, and neutralize cyber threats instantly.
             </p>
 
             <div class="buttons">
-
-                <a href="login.html" class="btn primary">
-                    Get Started
+                <a href="login.html" class="btn primary" id="getStartedBtn">
+                    <i class="fa-solid fa-rocket"></i> Get Started
                 </a>
 
-                <a href="dashboard.html" class="btn secondary">
-                    View Dashboard
+                <a href="dashboard.html" class="btn secondary" id="viewDashboardBtn">
+                    <i class="fa-solid fa-chart-line"></i> View Dashboard
                 </a>
-
             </div>
-
         </div>
 
         <div class="right">
-
-            <!-- Replace hero.png with your image -->
-            <img src="images/shield.png" alt="Cyber Security">
-
+            <!-- Enhanced Image inside styled div border -->
+            <div class="image-border-frame">
+                <img src="images/shield.png" alt="Cyber Security Shield" class="hero-shield-img">
+                <div class="floating-status-pill">
+                    <span class="status-indicator-green"></span>
+                    <span>AI Shield Active &bull; 99.2% Accuracy</span>
+                </div>
+            </div>
         </div>
-
     </section>
 
-    <!-- Features -->
-
+    <!-- Key Features Section -->
     <section class="features">
-
-        <h2>Key Features</h2>
-
-        <div class="grid">
-
-            <div class="card">
-                <i class="fa-solid fa-desktop"></i>
-                <h3>Real-time Monitoring</h3>
-                <p>Monitor network traffic continuously in real time.</p>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-brain"></i>
-                <h3>AI-Based Detection</h3>
-                <p>Detect intrusions using advanced machine learning models.</p>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-bell"></i>
-                <h3>Instant Alerts</h3>
-                <p>Receive notifications immediately whenever a threat is detected.</p>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-chart-pie"></i>
-                <h3>Analytics Dashboard</h3>
-                <p>Visualize attack trends and network statistics.</p>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-file-lines"></i>
-                <h3>Reports & Logs</h3>
-                <p>Generate and download detailed reports.</p>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-users"></i>
-                <h3>User Management</h3>
-                <p>Secure role-based login and user access management.</p>
-            </div>
-
+        <div class="section-header">
+            <h2>Key System Capabilities</h2>
+            <p>Comprehensive enterprise-grade network protection powered by intelligent machine learning pipelines.</p>
         </div>
 
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <h3>Real-time Monitoring</h3>
+                <p>Continuously inspect inbound and outbound packet streams with microsecond latency detection.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h3>AI-Based Detection</h3>
+                <p>Detect zero-day exploits and multi-vector anomalies using trained neural classification models.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+                <h3>Instant Alerts</h3>
+                <p>Immediate automated alerts with threat severity breakdown and targeted mitigation advice.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h3>Analytics Dashboard</h3>
+                <p>Interactive telemetry, traffic timelines, and attack vectors distribution visualizers.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <h3>Audit Reports & Logs</h3>
+                <p>Generate verifiable incident logs, compliance audits, and downloadable CSV/PDF reports.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-shield-virus"></i>
+                </div>
+                <h3>Automated IP Quarantine</h3>
+                <p>Autonomous blocking and firewall rule enforcement against persistent malicious sources.</p>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
-
     <footer>
-
-        <p>© 2026 NIDS | Network Intrusion Detection System. All Rights Reserved.</p>
-
+        <p>&copy; 2026 <strong>NIDS</strong> &bull; Network Intrusion Detection System. Designed for high assurance security.</p>
     </footer>
 
+    <!-- Logic Script -->
+    <script src="app.js"></script>
 </body>
 </html>

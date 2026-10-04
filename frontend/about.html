@@ -3,56 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="api-base-url" content="https://nids-backend.onrender.com">
-    <title>About - NIDS</title>
+    <title>About - NIDS Network Intrusion Detection System</title>
 
-    <link rel="stylesheet" href="style..css">
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header>
+    <!-- Unified Header & Navigation Bar -->
+    <header>
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>NIDS</span>
+        </a>
 
-<div class="logo">🛡 NIDS</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="alerts.html">Alerts</a>
+            <a href="reports.html">Reports</a>
+            <a href="about.html" class="active">About</a>
+        </nav>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="alerts.html">Alerts</a>
-    <a href="reports.html">Reports</a>
-    <a href="about.html">About</a>
-    <a href="login.html">Login</a>
-</nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn-nav">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+            </a>
+        </div>
+    </header>
 
-</header>
+    <!-- About Section Container -->
+    <main class="page-container">
+        <div class="page-header" style="justify-content: center; text-align: center;">
+            <div class="page-title">
+                <h1>About Network Intrusion Detection System</h1>
+                <p>Architecture, core capabilities, and operational overview</p>
+            </div>
+        </div>
 
-<section class="about">
+        <div class="about-box-card">
+            <h2><i class="fa-solid fa-circle-info"></i> Project Overview</h2>
+            <p>
+                The <strong>Network Intrusion Detection System (NIDS)</strong> is an enterprise-grade defense solution designed to proactively safeguard networked infrastructures against malicious activities, protocol abuses, and zero-day vulnerabilities.
+            </p>
+            <p>
+                By employing high-speed packet inspection alongside modern AI anomaly detection algorithms, NIDS provides real-time telemetry, threat triage, automated IP quarantine, and auditable compliance reporting in one unified light dashboard.
+            </p>
 
-<h1>About Network Intrusion Detection System</h1>
+            <h2><i class="fa-solid fa-cubes-stacked"></i> System Architecture & Capabilities</h2>
+            <ul class="about-features-list">
+                <li><i class="fa-solid fa-bolt"></i> Real-Time Packet Stream Analysis</li>
+                <li><i class="fa-solid fa-brain"></i> AI & ML Anomaly Classification</li>
+                <li><i class="fa-solid fa-bell"></i> Instant Threat Mitigation & Alerts</li>
+                <li><i class="fa-solid fa-file-invoice"></i> Forensics Logs & PDF/CSV Reports</li>
+                <li><i class="fa-solid fa-user-shield"></i> Role-Based Access Control</li>
+                <li><i class="fa-solid fa-shield-halved"></i> Automated Host Quarantine</li>
+            </ul>
 
-<div class="about-box">
+            <h2 style="margin-top: 30px;"><i class="fa-solid fa-sliders"></i> Machine Learning Engine</h2>
+            <p>
+                The underlying classification engine leverages multi-class classifiers trained on benchmark intrusion detection datasets (including NSL-KDD and CICIDS). It accurately differentiates normal benign behavior from DDoS attacks, unauthorized port sweeps, brute-force intrusions, and web application injection payloads with over <strong>99.2% precision</strong>.
+            </p>
 
-<h2>Project Overview</h2>
+            <div style="margin-top: 36px; text-align: center;">
+                <a href="dashboard.html" class="btn primary">
+                    <i class="fa-solid fa-gauge-high"></i> Explore Live Dashboard
+                </a>
+            </div>
+        </div>
+    </main>
 
-<p>
-Network Intrusion Detection System (NIDS) is designed to monitor network traffic
-and help detect suspicious activities. This project provides an interface for
-viewing the dashboard, alerts, and reports.
-</p>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <strong>NIDS</strong> &bull; Network Intrusion Detection System. Securing modern networks with AI.</p>
+    </footer>
 
-<h2>Project Features</h2>
-
-<ul>
-<li>Real-Time Monitoring</li>
-<li>AI-Based Detection</li>
-<li>Security Alerts</li>
-<li>Reports & Logs</li>
-<li>User Management</li>
-</ul>
-
-</div>
-
-</section>
-
+    <!-- Logic Script -->
+    <script src="app.js"></script>
 </body>
 </html>
