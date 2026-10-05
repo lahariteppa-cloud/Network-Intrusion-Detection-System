@@ -3,7 +3,80 @@
  * Interactivity, Charts, Simulation, and Flow Logic
  */
 
+// =========================================================
+// 0. Theme Manager (Dark / Light Theme)
+// =========================================================
+const ThemeManager = {
+    STORAGE_KEY: 'nids_theme',
+    
+    getStoredTheme() {
+        return localStorage.getItem(this.STORAGE_KEY);
+    },
+
+    getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    },
+
+    getCurrentTheme() {
+        return this.getStoredTheme() || this.getSystemTheme();
+    },
+
+    applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+        } else {
+            document.documentElement.classList.remove('dark-theme');
+        }
+        localStorage.setItem(this.STORAGE_KEY, theme);
+        this.updateToggleButtons(theme);
+
+        // Dispatch a custom event in case charts or other widgets need updating
+        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
+    },
+
+    updateToggleButtons(theme) {
+        const toggleButtons = document.querySelectorAll('.theme-toggle-btn, #themeToggleBtn');
+        toggleButtons.forEach(btn => {
+            const isDark = theme === 'dark';
+            const icon = btn.querySelector('i');
+            const label = btn.querySelector('.theme-toggle-label');
+
+            if (icon) {
+                icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            }
+            if (label) {
+                label.textContent = isDark ? 'Light' : 'Dark';
+            }
+            btn.setAttribute('aria-label', `Switch to ${isDark ? 'Light' : 'Dark'} Mode`);
+            btn.setAttribute('title', `Switch to ${isDark ? 'Light' : 'Dark'} Mode`);
+        });
+    },
+
+    toggleTheme() {
+        const nextTheme = this.getCurrentTheme() === 'dark' ? 'light' : 'dark';
+        this.applyTheme(nextTheme);
+        showToast(`Switched to ${nextTheme === 'dark' ? 'Dark' : 'Light'} Mode`, 'info');
+    },
+
+    init() {
+        // Apply immediately
+        this.applyTheme(this.getCurrentTheme());
+
+        // Listen for OS scheme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!this.getStoredTheme()) {
+                this.applyTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    }
+};
+
+// Immediately apply theme before DOMContentLoaded to prevent any white flash
+ThemeManager.init();
+
 document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
     initCharts();
     initAlertFilters();
     initSearchFilter();
@@ -12,7 +85,21 @@ document.addEventListener('DOMContentLoaded', () => {
     initActionButtons();
 });
 
+function initThemeToggle() {
+    const toggleButtons = document.querySelectorAll('.theme-toggle-btn, #themeToggleBtn');
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            ThemeManager.toggleTheme();
+        });
+    });
+    // Ensure initial button icons match current theme
+    ThemeManager.updateToggleButtons(ThemeManager.getCurrentTheme());
+}
+
+// =========================================================
 // Toast notification helper
+// =========================================================
 function showToast(message, type = 'info') {
     let toastContainer = document.getElementById('toast-container');
     if (!toastContainer) {
@@ -31,20 +118,21 @@ function showToast(message, type = 'info') {
     }
 
     const toast = document.createElement('div');
+    const isDark = ThemeManager.getCurrentTheme() === 'dark';
     const bgColors = {
         success: '#10b981',
         error: '#ef4444',
-        info: '#2563eb',
+        info: '#3b82f6',
         warning: '#f59e0b'
     };
 
     toast.style.cssText = `
-        background: #ffffff;
-        color: #0f172a;
+        background: ${isDark ? '#1e293b' : '#ffffff'};
+        color: ${isDark ? '#f8fafc' : '#0f172a'};
         padding: 14px 20px;
         border-radius: 12px;
-        border-left: 5px solid ${bgColors[type] || '#2563eb'};
-        box-shadow: 0 10px 25px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        border-left: 5px solid ${bgColors[type] || '#3b82f6'};
+        box-shadow: 0 10px 25px -3px rgba(0,0,0,${isDark ? '0.5' : '0.1'}), 0 4px 6px -2px rgba(0,0,0,0.05);
         font-size: 14px;
         font-weight: 600;
         display: flex;
@@ -52,9 +140,9 @@ function showToast(message, type = 'info') {
         gap: 12px;
         animation: toastSlideIn 0.3s ease-out;
         min-width: 260px;
-        border-top: 1px solid #e2e8f0;
-        border-right: 1px solid #e2e8f0;
-        border-bottom: 1px solid #e2e8f0;
+        border-top: 1px solid ${isDark ? '#334155' : '#e2e8f0'};
+        border-right: 1px solid ${isDark ? '#334155' : '#e2e8f0'};
+        border-bottom: 1px solid ${isDark ? '#334155' : '#e2e8f0'};
     `;
 
     const iconClass = type === 'success' ? 'fa-circle-check text-green' :
@@ -72,18 +160,22 @@ function showToast(message, type = 'info') {
     }, 3500);
 }
 
+// =========================================================
 // 1. Interactive Charts for Dashboard
+// =========================================================
 function initCharts() {
     const trafficCanvas = document.getElementById('trafficChart');
     if (trafficCanvas) {
         drawTrafficChart(trafficCanvas);
         window.addEventListener('resize', () => drawTrafficChart(trafficCanvas));
+        window.addEventListener('themeChanged', () => drawTrafficChart(trafficCanvas));
     }
 
     const attackCanvas = document.getElementById('attackChart');
     if (attackCanvas) {
         drawAttackChart(attackCanvas);
         window.addEventListener('resize', () => drawAttackChart(attackCanvas));
+        window.addEventListener('themeChanged', () => drawAttackChart(attackCanvas));
     }
 }
 
@@ -94,13 +186,14 @@ function drawTrafficChart(canvas) {
     canvas.width = width;
     canvas.height = height;
 
+    const isDark = ThemeManager.getCurrentTheme() === 'dark';
     const dataPoints = [45, 60, 52, 78, 95, 80, 110, 135, 120, 145, 130, 160];
     const labels = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
     
     ctx.clearRect(0, 0, width, height);
 
     // Draw grid lines
-    ctx.strokeStyle = '#f1f5f9';
+    ctx.strokeStyle = isDark ? '#1e293b' : '#f1f5f9';
     ctx.lineWidth = 1;
     for (let i = 1; i <= 4; i++) {
         const y = (height - 40) * (i / 4);
@@ -115,8 +208,8 @@ function drawTrafficChart(canvas) {
     const maxVal = 180;
 
     const gradient = ctx.createLinearGradient(0, 0, 0, height - 30);
-    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.25)');
-    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
+    gradient.addColorStop(0, isDark ? 'rgba(59, 130, 246, 0.35)' : 'rgba(37, 99, 235, 0.25)');
+    gradient.addColorStop(1, isDark ? 'rgba(59, 130, 246, 0.01)' : 'rgba(37, 99, 235, 0.01)');
 
     ctx.beginPath();
     ctx.moveTo(40, height - 30);
@@ -133,7 +226,7 @@ function drawTrafficChart(canvas) {
 
     // Draw Line
     ctx.beginPath();
-    ctx.strokeStyle = '#2563eb';
+    ctx.strokeStyle = isDark ? '#60a5fa' : '#2563eb';
     ctx.lineWidth = 3;
     ctx.lineJoin = 'round';
     dataPoints.forEach((val, index) => {
@@ -151,15 +244,15 @@ function drawTrafficChart(canvas) {
 
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = isDark ? '#111827' : '#ffffff';
         ctx.fill();
-        ctx.strokeStyle = '#2563eb';
+        ctx.strokeStyle = isDark ? '#60a5fa' : '#2563eb';
         ctx.lineWidth = 2;
         ctx.stroke();
 
         // X Labels (show every alternate)
         if (index % 2 === 0) {
-            ctx.fillStyle = '#64748b';
+            ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
             ctx.font = '11px Plus Jakarta Sans';
             ctx.textAlign = 'center';
             ctx.fillText(labels[index], x, height - 10);
@@ -174,6 +267,7 @@ function drawAttackChart(canvas) {
     canvas.width = width;
     canvas.height = height;
 
+    const isDark = ThemeManager.getCurrentTheme() === 'dark';
     const attacks = [
         { label: 'DDoS', value: 45, color: '#ef4444' },
         { label: 'SQL Injection', value: 25, color: '#f59e0b' },
@@ -216,13 +310,13 @@ function drawAttackChart(canvas) {
         ctx.fill();
 
         // Text
-        ctx.fillStyle = '#0f172a';
+        ctx.fillStyle = isDark ? '#f8fafc' : '#0f172a';
         ctx.font = 'bold 13px Plus Jakarta Sans';
         ctx.textAlign = 'left';
         ctx.fillText(item.label, legendX + 16, legendY + 9);
 
         // Percentage
-        ctx.fillStyle = '#64748b';
+        ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
         ctx.font = '12px Plus Jakarta Sans';
         ctx.fillText(`${item.value}%`, legendX + 120, legendY + 9);
 
@@ -230,7 +324,9 @@ function drawAttackChart(canvas) {
     });
 }
 
+// =========================================================
 // 2. Alert Severity Filtering
+// =========================================================
 function initAlertFilters() {
     const filterPills = document.querySelectorAll('.filter-pill');
     const alertItems = document.querySelectorAll('.alert-card-item');
@@ -254,7 +350,9 @@ function initAlertFilters() {
     });
 }
 
+// =========================================================
 // 3. Search filter for tables and lists
+// =========================================================
 function initSearchFilter() {
     const searchInputs = document.querySelectorAll('.table-search-input');
     searchInputs.forEach(input => {
@@ -272,7 +370,9 @@ function initSearchFilter() {
     });
 }
 
+// =========================================================
 // 4. Report details modal
+// =========================================================
 const reportDetails = {
     'R001': { title: 'Daily Traffic & Threat Summary', date: '04-08-2026', totalPackets: '1,245,890', threats: '3 DDoS, 1 SQLi', status: 'Completed', analyst: 'Auto-AI Sensor 4' },
     'R002': { title: 'Weekly Vulnerability Assessment', date: '04-08-2026', totalPackets: '8,932,100', threats: '14 Brute Force, 5 Port Scans', status: 'Completed', analyst: 'SecOps Team' },
@@ -317,7 +417,9 @@ function initReportModal() {
     });
 }
 
+// =========================================================
 // 5. Auth logic with feedback
+// =========================================================
 function initAuthForms() {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
@@ -346,9 +448,28 @@ function initAuthForms() {
             }, 1000);
         });
     }
+
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = forgotPasswordForm.querySelector('input[type="email"]');
+            const email = emailInput ? emailInput.value.trim() : '';
+            
+            showToast(`Sending reset link to ${email || 'your email'}...`, 'info');
+            setTimeout(() => {
+                showToast('Password reset link sent! Check your email.', 'success');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 800);
+            }, 600);
+        });
+    }
 }
 
+// =========================================================
 // 6. Action buttons (Simulation, Download, Clear)
+// =========================================================
 function initActionButtons() {
     const simulateBtn = document.getElementById('simulateAttackBtn');
     if (simulateBtn) {
@@ -378,7 +499,6 @@ function initActionButtons() {
         exportBtn.addEventListener('click', () => {
             showToast('Generating security audit report...', 'info');
             setTimeout(() => {
-                // Download dummy CSV file
                 const csvContent = "data:text/csv;charset=utf-8,Time,Attack_Type,Source_IP,Status\n10:20 AM,DDoS Attack,192.168.1.10,Blocked\n10:45 AM,SQL Injection,172.16.0.25,Detected\n11:10 AM,Brute Force,10.0.0.15,Blocked\n11:35 AM,Port Scan,192.168.0.55,Monitoring";
                 const encodedUri = encodeURI(csvContent);
                 const link = document.createElement("a");
@@ -410,9 +530,9 @@ function initActionButtons() {
                 const feed = document.querySelector('.alert-feed');
                 if (feed) {
                     feed.innerHTML = `
-                        <div style="text-align: center; padding: 40px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 16px; color: #64748b;">
+                        <div style="text-align: center; padding: 40px; background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: 16px; color: var(--text-muted);">
                             <i class="fa-solid fa-circle-check" style="font-size: 36px; color: #10b981; margin-bottom: 12px; display: block;"></i>
-                            <h3 style="color: #0f172a; margin-bottom: 6px;">All Alerts Acknowledged</h3>
+                            <h3 style="color: var(--text-primary); margin-bottom: 6px;">All Alerts Acknowledged</h3>
                             <p>No active threats pending resolution in the queue.</p>
                         </div>
                     `;

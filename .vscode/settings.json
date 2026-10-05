@@ -1,3 +1,4 @@
 {
-    "liveServer.settings.multiRootWorkspaceName": "Network-Intrusion-Detection-System"
+    "liveServer.settings.multiRootWorkspaceName": "Network-Intrusion-Detection-System",
+    "liveServer.settings.port": 5503
 }

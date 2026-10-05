@@ -8,6 +8,15 @@
     <!-- Google Fonts & Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Immediate Theme Initialization (Prevents FOUC) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('nids_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark-theme');
+        })();
+    </script>
 </head>
 <body>
 
@@ -27,6 +36,10 @@
         </nav>
 
         <div class="nav-actions">
+            <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode" title="Toggle Dark/Light Mode">
+                <i class="fa-solid fa-moon"></i>
+                <span class="theme-toggle-label">Dark</span>
+            </button>
             <a href="login.html" class="login-btn-nav">
                 <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
             </a>

@@ -8,8 +8,25 @@
     <!-- Google Fonts & Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Immediate Theme Initialization (Prevents FOUC) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('nids_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark-theme');
+        })();
+    </script>
 </head>
 <body class="auth-page">
+
+    <!-- Floating Theme Toggle for Auth Pages -->
+    <div class="theme-toggle-floating">
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode" title="Toggle Dark/Light Mode">
+            <i class="fa-solid fa-moon"></i>
+            <span class="theme-toggle-label">Dark</span>
+        </button>
+    </div>
 
     <div class="auth-card-frame" style="max-width: 480px;">
         <div class="auth-icon-badge">
