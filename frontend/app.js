@@ -83,6 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initReportModal();
     initAuthForms();
     initActionButtons();
+    loadDashboardData();
+    loadDashboardAlerts();
+    loadAlertsPage();
+    loadReportsPage();
 });
 
 function initThemeToggle() {
@@ -329,18 +333,30 @@ function drawAttackChart(canvas) {
 // =========================================================
 function initAlertFilters() {
     const filterPills = document.querySelectorAll('.filter-pill');
-    const alertItems = document.querySelectorAll('.alert-card-item');
 
     if (!filterPills.length) return;
 
     filterPills.forEach(pill => {
         pill.addEventListener('click', () => {
+
+            // Remove active state from all buttons
             filterPills.forEach(p => p.classList.remove('active'));
+
+            // Activate clicked button
             pill.classList.add('active');
 
+            // Get selected filter
             const filter = pill.getAttribute('data-filter');
+
+            // IMPORTANT:
+            // Get alert cards AFTER they have been loaded by the API
+            const alertItems = document.querySelectorAll('.alert-card-item');
+
             alertItems.forEach(item => {
-                if (filter === 'all' || item.classList.contains(filter)) {
+                if (
+                    filter === 'all' ||
+                    item.classList.contains(filter)
+                ) {
                     item.style.display = 'flex';
                 } else {
                     item.style.display = 'none';
@@ -540,5 +556,408 @@ function initActionButtons() {
                 showToast('All alerts cleared and logged into history.', 'success');
             }
         });
+    }
+}
+async function loadDashboardData() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/dashboard');
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch dashboard data');
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('statTraffic').innerText =
+                data.total_traffic;
+
+            document.getElementById('statThreatsCount').innerText =
+                data.threats_detected;
+
+            document.getElementById('statAccuracy').innerText =
+                data.detection_accuracy + '%';
+
+            document.getElementById('statBlockedIPs').innerText =
+                data.blocked_ips;
+        }
+
+    } catch (error) {
+        console.error('Dashboard API Error:', error);
+        showToast('Unable to load dashboard data', 'error');
+    }
+}
+async function loadDashboardAlerts() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/alerts');
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch alerts');
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error('Failed to load alerts');
+        }
+
+        const tableBody = document.querySelector('#dashboardAlertsTable tbody');
+
+        if (!tableBody) return;
+
+        tableBody.innerHTML = '';
+
+        data.alerts.forEach(alert => {
+            let riskClass = 'medium';
+
+            if (alert.status === 'Blocked') {
+                riskClass = 'high';
+            } else if (alert.status === 'Monitoring') {
+                riskClass = 'low';
+            }
+
+            let actionClass = 'info';
+
+            if (alert.status === 'Blocked') {
+                actionClass = 'success';
+            }
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td><strong>${alert.time}</strong></td>
+                    <td>${alert.attack_type}</td>
+                    <td><code>${alert.ip_address}</code></td>
+                    <td>
+                        <span class="badge ${riskClass}">
+                            ${riskClass.charAt(0).toUpperCase() + riskClass.slice(1)} Risk
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge ${actionClass}">
+                            ${alert.status}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (error) {
+        console.error('Dashboard Alerts Error:', error);
+        showToast('Unable to load recent alerts', 'error');
+    }
+}
+async function loadAlertsPage() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/alerts');
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch alerts');
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error('Failed to load alerts');
+        }
+
+        // Update statistics
+        document.getElementById('totalAlerts').innerText = data.total_alerts;
+        document.getElementById('highRiskAlerts').innerText = data.high_risk;
+        document.getElementById('mediumRiskAlerts').innerText = data.medium_risk;
+        document.getElementById('lowRiskAlerts').innerText = data.low_risk;
+
+        // Update filter counts
+        document.getElementById('filterAll').innerText =
+            `All Alerts (${data.total_alerts})`;
+
+        document.getElementById('filterHigh').innerText =
+            `High Risk (${data.high_risk})`;
+
+        document.getElementById('filterMedium').innerText =
+            `Medium Risk (${data.medium_risk})`;
+
+        document.getElementById('filterLow').innerText =
+            `Low Risk (${data.low_risk})`;
+
+        // Update alert cards
+        const alertFeed = document.getElementById('alertFeed');
+
+        if (!alertFeed) return;
+
+        alertFeed.innerHTML = '';
+
+        data.alerts.forEach(alert => {
+
+            let riskClass =  alert.severity || 'medium';
+            let icon = 'fa-triangle-exclamation';
+            let iconClass = 'text-amber';
+
+            if (riskClass === 'high') {
+                icon = 'fa-circle-radiation';
+                iconClass = 'text-red';
+            } else if (riskClass === 'low') {
+                icon = 'fa-radar';
+                iconClass = 'text-green';
+            } else if (riskClass === 'info') {
+                icon = 'fa-circle-info';
+                iconClass = 'text-blue';
+            }
+
+            alertFeed.innerHTML += `
+                <div class="alert-card-item ${riskClass}">
+                    <div class="alert-main-content">
+                        <h3>
+                            <i class="fa-solid ${icon} ${iconClass}"></i>
+                            ${alert.attack_type}
+                        </h3>
+
+                        <div class="alert-meta">
+                            <span>
+                                <strong>Source IP:</strong>
+                                <code>${alert.ip_address}</code>
+                            </span>
+
+                            <span>
+                                <strong>Time:</strong>
+                                ${alert.time}
+                            </span>
+
+                            <span>
+                                <strong>Status:</strong>
+                                ${alert.status}
+                            </span>
+                        </div>
+                    </div>
+
+                    <span class="badge ${riskClass}">
+                        ${alert.status}
+                    </span>
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        console.error('Alerts API Error:', error);
+        showToast('Unable to load alerts', 'error');
+    }
+}function initReportViewButtons() {
+    const buttons = document.querySelectorAll('.view-report-btn');
+
+    buttons.forEach(button => {
+
+        // Prevent duplicate event listeners
+        button.onclick = async function () {
+
+            const reportId = this.getAttribute('data-id');
+
+            console.log('View button clicked. Report ID:', reportId);
+
+            if (!reportId) {
+                console.error('No report ID found');
+                return;
+            }
+
+            const modal = document.getElementById('reportModal');
+
+            if (!modal) {
+                console.error('reportModal not found');
+                return;
+            }
+
+            // Show modal immediately
+            modal.classList.add('active');
+
+            // Show loading state
+            document.getElementById('modalReportId').innerText =
+                'R' + String(reportId).padStart(3, '0');
+
+            document.getElementById('modalReportTitle').innerText =
+                'Loading...';
+
+            document.getElementById('modalReportType').innerText =
+                'Loading...';
+
+            document.getElementById('modalReportDate').innerText =
+                'Loading...';
+
+            document.getElementById('modalReportStatus').innerText =
+                'Loading...';
+
+            document.getElementById('modalReportSummary').innerText =
+                'Loading...';
+
+            try {
+
+                const response = await fetch(
+                    `http://127.0.0.1:5000/api/reports/${reportId}`
+                );
+
+                console.log(
+                    'Report API status:',
+                    response.status
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
+                }
+
+                const result = await response.json();
+
+                console.log(
+                    'Report API response:',
+                    result
+                );
+
+                if (!result.success || !result.data) {
+                    throw new Error(
+                        result.message || 'Report not found'
+                    );
+                }
+
+                const report = result.data;
+
+                // Report ID
+                document.getElementById('modalReportId').innerText =
+                    'R' + String(report.id).padStart(3, '0');
+
+                // Title
+                document.getElementById('modalReportTitle').innerText =
+                    report.name || 'N/A';
+
+                // Type
+                document.getElementById('modalReportType').innerText =
+                    report.type || 'N/A';
+
+                // Date
+                if (report.generated_at) {
+                    const date = new Date(report.generated_at);
+
+                    document.getElementById('modalReportDate').innerText =
+                        isNaN(date.getTime())
+                            ? report.generated_at
+                            : date.toLocaleString();
+                } else {
+                    document.getElementById('modalReportDate').innerText =
+                        'N/A';
+                }
+
+                // Status
+                document.getElementById('modalReportStatus').innerText =
+                    report.status || 'N/A';
+
+                // Summary
+                document.getElementById('modalReportSummary').innerText =
+                    report.summary || 'No summary available';
+
+                // Store report information in modal
+                modal.dataset.reportId = report.id;
+                modal.dataset.filePath = report.file_path || '';
+
+                console.log(
+                    'Report loaded successfully:',
+                    report
+                );
+
+            } catch (error) {
+
+                console.error(
+                    'Report Detail API Error:',
+                    error
+                );
+
+                document.getElementById('modalReportTitle').innerText =
+                    'Unable to load report';
+
+                document.getElementById('modalReportType').innerText =
+                    'N/A';
+
+                document.getElementById('modalReportDate').innerText =
+                    'N/A';
+
+                document.getElementById('modalReportStatus').innerText =
+                    'Error';
+
+                document.getElementById('modalReportSummary').innerText =
+                    error.message;
+
+                if (typeof showToast === 'function') {
+                    showToast(
+                        'Unable to load report details',
+                        'error'
+                    );
+                }
+            }
+        };
+    });
+}
+async function loadReportsPage() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/reports');
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch reports');
+        }
+
+        const data = await response.json();
+
+        console.log('Reports API Response:', data);
+
+        if (!data.success) {
+            throw new Error('Failed to load reports');
+        }
+
+        const tableBody = document.getElementById('reportsTableBody');
+
+        if (!tableBody) {
+            console.error('reportsTableBody not found!');
+            return;
+        }
+
+        tableBody.innerHTML = '';
+
+        data.reports.forEach(report => {
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td>
+                        <code>R${String(report.id).padStart(3, '0')}</code>
+                    </td>
+
+                    <td>
+                        <strong>${report.name}</strong>
+                    </td>
+
+                    <td>
+                        ${report.date}
+                    </td>
+
+                    <td>
+                        <span class="badge success">
+                            <i class="fa-solid fa-check"></i>
+                            ${report.status}
+                        </span>
+                    </td>
+
+                    <td>
+                        <button
+                            class="action-btn-sm view-report-btn"
+                            data-id="${report.id}">
+                            <i class="fa-solid fa-eye"></i>
+                            View
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        initReportViewButtons();
+
+        console.log('Reports loaded:', data.reports.length);
+
+    } catch (error) {
+        console.error('Reports API Error:', error);
+        showToast('Unable to load reports', 'error');
     }
 }

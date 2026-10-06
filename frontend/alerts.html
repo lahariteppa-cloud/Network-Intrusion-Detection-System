@@ -68,7 +68,7 @@
                     <i class="fa-solid fa-bell"></i>
                 </div>
                 <div class="stat-info">
-                    <h2>27</h2>
+                    <h2 id="totalAlerts">27</h2>
                     <p>Total Alerts</p>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                     <i class="fa-solid fa-fire"></i>
                 </div>
                 <div class="stat-info">
-                    <h2>12</h2>
+                    <h2 id="highRiskAlerts">12</h2>
                     <p>High Risk</p>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                     <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
                 <div class="stat-info">
-                    <h2>8</h2>
+                    <h2 id="mediumRiskAlerts">8</h2>
                     <p>Medium Risk</p>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <div class="stat-info">
-                    <h2>7</h2>
+                    <h2 id="lowRiskAlerts">7</h2>
                     <p>Low Risk</p>
                 </div>
             </div>
@@ -106,66 +106,24 @@
 
         <!-- Interactive Filter Pills -->
         <div class="alerts-filter-bar">
-            <button class="filter-pill active" data-filter="all">All Alerts (27)</button>
-            <button class="filter-pill" data-filter="high">High Risk (12)</button>
-            <button class="filter-pill" data-filter="medium">Medium Risk (8)</button>
-            <button class="filter-pill" data-filter="low">Low Risk (7)</button>
-            <button class="filter-pill" data-filter="info">Informational</button>
+            <button class="filter-pill active" data-filter="all" id="filterAll">
+                All Alerts (27)
+            </button>
+            <button class="filter-pill" data-filter="high" id="filterHigh">
+                High Risk (12)
+            </button>
+            <button class="filter-pill" data-filter="medium" id="filterMedium">
+                Medium Risk (8)
+            </button>
+            <button class="filter-pill" data-filter="low" id="filterLow">
+                Low Risk (7)
+            </button>
+            <button class="filter-pill" data-filter="info">
+                Informational</button>
         </div>
 
         <!-- Alerts Feed List -->
-        <div class="alert-feed">
-            <div class="alert-card-item high">
-                <div class="alert-main-content">
-                    <h3><i class="fa-solid fa-circle-radiation text-red"></i> Distributed Denial of Service (DDoS)</h3>
-                    <div class="alert-meta">
-                        <span><strong>Source IP:</strong> <code>192.168.1.10</code></span>
-                        <span><strong>Target Port:</strong> <code>80 / 443</code></span>
-                        <span><strong>Time:</strong> 10:20 AM</span>
-                        <span><strong>Protocol:</strong> TCP SYN Flood</span>
-                    </div>
-                </div>
-                <span class="badge high"><i class="fa-solid fa-lock"></i> Auto-Blocked</span>
-            </div>
-
-            <div class="alert-card-item medium">
-                <div class="alert-main-content">
-                    <h3><i class="fa-solid fa-code text-amber"></i> SQL Injection Pattern in HTTP Query</h3>
-                    <div class="alert-meta">
-                        <span><strong>Source IP:</strong> <code>172.16.0.25</code></span>
-                        <span><strong>Target:</strong> <code>/api/v1/auth</code></span>
-                        <span><strong>Time:</strong> 10:45 AM</span>
-                        <span><strong>Pattern:</strong> <code>UNION SELECT</code></span>
-                    </div>
-                </div>
-                <span class="badge medium"><i class="fa-solid fa-eye"></i> Detected</span>
-            </div>
-
-            <div class="alert-card-item low">
-                <div class="alert-main-content">
-                    <h3><i class="fa-solid fa-key text-green"></i> Repeated SSH Authentication Failures</h3>
-                    <div class="alert-meta">
-                        <span><strong>Source IP:</strong> <code>10.0.0.15</code></span>
-                        <span><strong>Target Port:</strong> <code>22</code></span>
-                        <span><strong>Time:</strong> 11:10 AM</span>
-                        <span><strong>Attempts:</strong> 5 in 60s</span>
-                    </div>
-                </div>
-                <span class="badge low"><i class="fa-solid fa-user-slash"></i> Rate-Limited</span>
-            </div>
-
-            <div class="alert-card-item info">
-                <div class="alert-main-content">
-                    <h3><i class="fa-solid fa-radar text-blue"></i> Sequential Port Scanning Activity</h3>
-                    <div class="alert-meta">
-                        <span><strong>Source IP:</strong> <code>192.168.0.55</code></span>
-                        <span><strong>Probed Ports:</strong> <code>21, 22, 80, 8080</code></span>
-                        <span><strong>Time:</strong> 11:35 AM</span>
-                        <span><strong>Action:</strong> Logged to SIEM</span>
-                    </div>
-                </div>
-                <span class="badge info"><i class="fa-solid fa-satellite-dish"></i> Monitoring</span>
-            </div>
+        <div class="alert-feed" id="alertFeed">    
         </div>
     </main>
 

@@ -82,35 +82,7 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>R001</code></td>
-                            <td><strong>Daily Traffic & Threat Summary</strong></td>
-                            <td>04-08-2026</td>
-                            <td><span class="badge success"><i class="fa-solid fa-check"></i> Completed</span></td>
-                            <td><button class="action-btn-sm view-report-btn" data-id="R001"><i class="fa-solid fa-eye"></i> View</button></td>
-                        </tr>
-                        <tr>
-                            <td><code>R002</code></td>
-                            <td><strong>Weekly Vulnerability Assessment</strong></td>
-                            <td>04-08-2026</td>
-                            <td><span class="badge success"><i class="fa-solid fa-check"></i> Completed</span></td>
-                            <td><button class="action-btn-sm view-report-btn" data-id="R002"><i class="fa-solid fa-eye"></i> View</button></td>
-                        </tr>
-                        <tr>
-                            <td><code>R003</code></td>
-                            <td><strong>Monthly Anomaly Detection Audit</strong></td>
-                            <td>04-08-2026</td>
-                            <td><span class="badge medium"><i class="fa-solid fa-hourglass-half"></i> Pending Review</span></td>
-                            <td><button class="action-btn-sm view-report-btn" data-id="R003"><i class="fa-solid fa-eye"></i> View</button></td>
-                        </tr>
-                        <tr>
-                            <td><code>R004</code></td>
-                            <td><strong>High-Severity Attack Postmortem</strong></td>
-                            <td>04-08-2026</td>
-                            <td><span class="badge success"><i class="fa-solid fa-check"></i> Completed</span></td>
-                            <td><button class="action-btn-sm view-report-btn" data-id="R004"><i class="fa-solid fa-eye"></i> View</button></td>
-                        </tr>
+                   <tbody id="reportsTableBody">
                     </tbody>
                 </table>
             </div>
@@ -120,24 +92,80 @@
     <!-- Report Details Modal Dialog -->
     <div class="modal-backdrop" id="reportModal">
         <div class="modal-box">
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-file-shield text-blue"></i> Report <span id="modalReportId">R001</span></h3>
-                <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
-            </div>
-            <div class="modal-body" style="font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
-                <p><strong>Title:</strong> <span id="modalReportTitle" style="color: var(--text-primary); font-weight: 700;">Daily Traffic & Threat Summary</span></p>
-                <p><strong>Date Generated:</strong> <span id="modalReportDate">04-08-2026</span></p>
-                <p><strong>Packets Analyzed:</strong> <span id="modalReportPackets">1,245,890</span></p>
-                <p><strong>Threats Intercepted:</strong> <span id="modalReportThreats">3 DDoS, 1 SQLi</span></p>
-                <p><strong>Compliance Status:</strong> <span id="modalReportStatus" style="color: #059669; font-weight: 600;">Completed</span></p>
-                <p><strong>Auditing System:</strong> <span id="modalReportAnalyst">Auto-AI Sensor 4</span></p>
-            </div>
-            <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn secondary" onclick="document.getElementById('reportModal').classList.remove('active')">Close</button>
-                <button class="btn primary" id="downloadModalReportBtn"><i class="fa-solid fa-download"></i> Download PDF</button>
-            </div>
+         <div class="modal-box">
+
+        <div class="modal-header">
+            <h3>
+                <i class="fa-solid fa-file-shield text-blue"></i>
+                Report <span id="modalReportId">R---</span>
+            </h3>
+
+            <button class="modal-close-btn" id="modalCloseBtn">
+                &times;
+            </button>
         </div>
+
+        <div class="modal-body"
+             style="font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
+
+            <p>
+                <strong>Title:</strong>
+                <span id="modalReportTitle"
+                      style="color: var(--text-primary); font-weight: 700;">
+                    Loading...
+                </span>
+            </p>
+
+            <p>
+                <strong>Type:</strong>
+                <span id="modalReportType">
+                    Loading...
+                </span>
+            </p>
+
+            <p>
+                <strong>Date Generated:</strong>
+                <span id="modalReportDate">
+                    Loading...
+                </span>
+            </p>
+
+            <p>
+                <strong>Compliance Status:</strong>
+                <span id="modalReportStatus"
+                      style="color: #059669; font-weight: 600;">
+                    Loading...
+                </span>
+            </p>
+
+            <p>
+                <strong>Summary:</strong>
+                <span id="modalReportSummary">
+                    Loading...
+                </span>
+            </p>
+
+        </div>
+
+        <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 10px;">
+
+            <button
+                class="btn secondary"
+                id="modalCloseBtnBottom">
+                Close
+            </button>
+
+            <button
+                class="btn primary"
+                id="downloadModalReportBtn">
+                <i class="fa-solid fa-download"></i>
+                Download PDF
+            </button>
+
+        </div>
+
     </div>
+</div>   
 
     <!-- Footer -->
     <footer>
