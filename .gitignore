@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -225,4 +226,20 @@ __pycache__/
 *.pyc
 reports/
 nids.db
+=======
+# Virtual environment
+venv/
+
+# Environment variables / secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated reports
+reports/
+
+# IDE files
+>>>>>>> 89dbddb (Complete backend integration and report PDFs)
 .vscode/
