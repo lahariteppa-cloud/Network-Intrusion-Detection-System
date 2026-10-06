@@ -459,7 +459,8 @@ def alerts():
     cur.execute("""
         SELECT attack_type, source_ip as ip_address,
                to_char(timestamp, 'HH12:MI AM') as time,
-               status
+               status,
+               severity
         FROM alerts
         ORDER BY timestamp DESC
         LIMIT 10
@@ -472,7 +473,8 @@ def alerts():
             "attack_type": alert['attack_type'],
             "ip_address": alert['ip_address'],
             "time": alert['time'],
-            "status": alert['status'].capitalize()
+            "status": alert['status'].capitalize(),
+            "severity": alert['severity']
         })
 
     cur.close()
@@ -1055,7 +1057,111 @@ def unblock_ip(ip_address):
         "message": f"IP {ip_address} unblocked successfully"
     })
 
+@app.route("/api/reports/<int:report_id>", methods=["GET"])
+def get_report_detail(report_id):
+    """Get detailed report information"""
 
+    conn = get_db_connection()
+    cur = get_db_cursor(conn)
+
+    cur.execute("""
+        SELECT
+            id,
+            name,
+            type,
+            status,
+            generated_at,
+            completed_at,
+            file_path,
+            summary
+        FROM reports
+        WHERE id = %s
+    """, (report_id,))
+
+    report = cur.fetchone()
+
+    cur.close()
+    release_db_connection(conn)
+
+    if not report:
+        return jsonify({
+            "success": False,
+            "message": "Report not found"
+        }), 404
+
+    type_map = {
+        "security_analysis": "Security Analysis",
+        "threat_analysis": "Threat Analysis",
+        "intrusion_detection": "Intrusion Detection",
+        "traffic_analysis": "Traffic Analysis"
+    }
+
+    return jsonify({
+        "success": True,
+        "data": {
+            "id": report["id"],
+            "name": report["name"],
+            "type": type_map.get(report["type"], report["type"]),
+            "status": report["status"].capitalize(),
+            "generated_at": report["generated_at"],
+            "completed_at": report["completed_at"],
+            "file_path": report["file_path"],
+            "summary": report["summary"]
+        }
+    })
+# your existing get_report_detail() function ends here
+
+
+@app.route("/api/reports/<int:report_id>/download", methods=["GET"])
+def download_report(report_id):
+    """Download a report PDF"""
+
+    conn = get_db_connection()
+    cur = get_db_cursor(conn)
+
+    cur.execute("""
+        SELECT id, name, file_path
+        FROM reports
+        WHERE id = %s
+    """, (report_id,))
+
+    report = cur.fetchone()
+
+    cur.close()
+    release_db_connection(conn)
+
+    if not report:
+        return jsonify({
+            "success": False,
+            "message": "Report not found"
+        }), 404
+
+    file_path = report["file_path"]
+
+    if not file_path:
+        return jsonify({
+            "success": False,
+            "message": "PDF file is not available for this report"
+        }), 404
+
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    relative_path = file_path.lstrip("/\\")
+    local_file = os.path.join(backend_dir, relative_path)
+
+    if not os.path.isfile(local_file):
+        return jsonify({
+            "success": False,
+            "message": "PDF file is not available on the server yet"
+        }), 404
+
+    from flask import send_file
+
+    return send_file(
+        local_file,
+        as_attachment=True,
+        download_name=os.path.basename(local_file),
+        mimetype="application/pdf"
+    )
 @app.route("/api/reports", methods=["POST"])
 def create_report():
     """Create a new report"""
