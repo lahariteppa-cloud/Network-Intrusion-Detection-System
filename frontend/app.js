@@ -527,17 +527,34 @@ function initActionButtons() {
             }, 800);
         });
     }
-
     const downloadModalBtn = document.getElementById('downloadModalReportBtn');
-    if (downloadModalBtn) {
-        downloadModalBtn.addEventListener('click', () => {
-            const reportId = document.getElementById('modalReportId')?.innerText || 'R001';
-            showToast(`Downloading Report ${reportId}...`, 'info');
-            setTimeout(() => {
-                showToast(`Report ${reportId} exported as PDF/Summary!`, 'success');
-            }, 700);
-        });
-    }
+
+if (downloadModalBtn) {
+    downloadModalBtn.addEventListener('click', () => {
+
+        const modal = document.getElementById('reportModal');
+        const reportId = modal?.dataset.reportId;
+
+        if (!reportId) {
+            showToast('Report ID not found', 'error');
+            return;
+        }
+
+        showToast('Downloading report...', 'info');
+
+        const downloadUrl =
+            `http://127.0.0.1:5000/api/reports/${reportId}/download`;
+
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        showToast('Report PDF download started!', 'success');
+    });
+}
 
     const clearAlertsBtn = document.getElementById('clearAlertsBtn');
     if (clearAlertsBtn) {
@@ -584,7 +601,6 @@ async function loadDashboardData() {
 
     } catch (error) {
         console.error('Dashboard API Error:', error);
-        showToast('Unable to load dashboard data', 'error');
     }
 }
 async function loadDashboardAlerts() {
@@ -643,7 +659,6 @@ async function loadDashboardAlerts() {
 
     } catch (error) {
         console.error('Dashboard Alerts Error:', error);
-        showToast('Unable to load recent alerts', 'error');
     }
 }
 async function loadAlertsPage() {
@@ -738,7 +753,6 @@ async function loadAlertsPage() {
 
     } catch (error) {
         console.error('Alerts API Error:', error);
-        showToast('Unable to load alerts', 'error');
     }
 }function initReportViewButtons() {
     const buttons = document.querySelectorAll('.view-report-btn');
@@ -958,6 +972,5 @@ async function loadReportsPage() {
 
     } catch (error) {
         console.error('Reports API Error:', error);
-        showToast('Unable to load reports', 'error');
     }
 }
